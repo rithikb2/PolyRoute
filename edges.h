@@ -1,14 +1,21 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <utility>
+#include<map>
 
 using namespace std;
 
 class Edge {
     public:
-    void addEdge(string origin, string dest, double weight);
-    void printEdgeWeights();
+    Edge(string origin, string dest, double weight);
+    ~Edge();
+    void addEdge(map<string, vector<pair<string, double>>> edges_map, map<string, map<string, double>> mapRoute2d);
+    
+    //void printEdgeWeights();
 
     private:
-    map<string, vector<pair<string, double>>> edges_map; //Map that contains all the weights of the edges between airports
+    string edge_origin;
+    string edge_dest;
+    double edge_weight;
 };
