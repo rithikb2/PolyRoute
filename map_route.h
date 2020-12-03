@@ -17,12 +17,17 @@ class MapRoute {
     * It's a map where the keys are the origin airports (IATA-string)
     * The values for each of the keys is a vector of pairs
     * Each of the pairs contains the destination airport (IATA-string), and the weight of the path from the origin to the destination (double)
+    * The edges_map would have a key (origin airport node) and the values would be a vector of pairs that includes the destination airport node, and weight
+    * ex. ORD: [(SFO, 63.4), (DFW, 43.1)], CDF: [(SHA, 110.5)]
+    * Can allow us to hold all the weights in an organized way
     */
     map<string, vector<pair<string, double>>> edges_map; //Map that contains all the weights of the edges between airports.
 
     /*
     * Container that allows for easier access to the weights of the routes between two airports
     * It's a 2D Map where the first key is the origin airport, the second key is the destination airport, and the value is the weight of the path
+    * ex. routes_map[ORD][DFW] = 43.1 or routes_map[CDF][SHA] = 110.5
+    * Can allow us to access weights easier if we already know the source and destination airports
     */
     map<string, map<string, double>> routes_map; //2D Map that has the weights of the edges between the airports
 
