@@ -6,8 +6,8 @@
 #include <fstream>
 #include <sstream>
 
-#include "edges.h"
 #include "map_route.h"
+using namespace std;
 
 /*
 * MapRoute Constructor that takes in our two datasets as strings (path of datasets)
@@ -36,6 +36,7 @@ MapRoute::MapRoute(string route_dataset_path, string airline_dataset_path) {
         getline(linestream, type, ',');
         getline(linestream, source, ',');
         //Node Logic goes here
+        vertices_map[IATA] = new Vertex(IATA, stod(latitude), stod(longitude));
         //Need to make both a Node, and store the Node in some sort of container
     }
 

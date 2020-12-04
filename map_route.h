@@ -4,6 +4,9 @@
 #include <fstream>
 #include <sstream>
 
+#include "vertex.h"
+#include "edges.h"
+
 using namespace std;
 
 class MapRoute {
@@ -12,6 +15,19 @@ class MapRoute {
     //~Maproute();
 
     private:
+    //program return value
+    vector<string> finalroute;
+    //User inputs number of sides on desired polygon
+    int sides;
+    /*
+    * Contains user inputed angles 
+    * Represents the inner angles of a desired polygon
+    */
+    vector<double> angles;
+    //Degrees of freedom for determining a valid edge
+    double dof;
+
+    map<string, Vertex> vertices_map;
     /*
     * Our container that stores all of the weighted edges
     * It's a map where the keys are the origin airports (IATA-string)

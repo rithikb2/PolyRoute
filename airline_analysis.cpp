@@ -27,7 +27,6 @@ int main() {
         getline(linestream, type, ',');
         getline(linestream, source, ',');
         
-        
         cout << "Name: " << name << endl << "Lat: " << latitude << endl << "Long: " << longitude << endl;
         count++;
     }

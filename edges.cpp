@@ -9,7 +9,7 @@
 
 using namespace std;
 /*
-* Edge Constructor that takes in the IATA of the Origin Airport, IATA of Destination, and Weight of the route
+* Edge Constructor that takes in the IATA of the Origin Airport, IATA of Destination, and Weight(distance) of the route
 * Sets the input variables to their respective private variables
 * Creates the Edge Object that can be added to the map with addEdge function
 */
