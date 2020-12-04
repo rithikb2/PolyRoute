@@ -13,6 +13,6 @@ class Vertex {
 
     private:
     string iata;
-    double lati
+    double lati;
     double longi;
 };

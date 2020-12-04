@@ -56,18 +56,24 @@ MapRoute::MapRoute(string route_dataset_path, string airline_dataset_path) {
         getline(linestream, stops, ',');
         getline(linestream, equipment, ',');
         //Edge Logic goes here
-        Edge newEdge(source_airport, dest_airport, 32.5); //Made a default weight-change this later!
-        /*For Weight, we could use Haversine formula to convert lat & long to distance
-        double earth_radius = 6371; //km
-        double lat_origin = source_airport.latitude * M_PI/180 //radians
-        double lat_dest = dest_airport.latitude * M_PI/180 //radians
-        double lat_difference = source_airport.latitude - dest_airport.latitude * M_PI/180;
-        double long_difference = source_airport.longitude - dest_airport.longitude *M_PI/180;
-        double haversine = sin(lat_difference/2)*sin(lat_difference/2) + cos(lat_origin) * cos(lat_dest) * sin(long_difference/2) * sin(long_difference/2);
-        double c = 2*atan2(sqrt(haversine), sqrt(1-haversine));
-        double distance = earth_radius * c; //Can potentially be used for weight between two airports (distance in km) 
-        */
+        Vertex origin = vertices_map[source_airport];
+        Vertex destination = vertices_map[dest_airport];
+        double distance = getDistance(origin, destination);
+        Edge newEdge(source_airport, dest_airport, distance); //Made a default weight-change this later!
         newEdge.addEdge(edges_map, routes_map); //Add newly created edge to our map of edges
     }
 
+}
+
+double MapRoute::getDistance(Vertex origin, Vertex dest) {
+    //For Weight, we could use Haversine formula to convert lat & long to distance
+    double earth_radius = 6371; //km
+    double lat_origin = origin.lati * M_PI/180; //radians
+    double lat_dest = dest.lati * M_PI/180; //radians
+    double lat_difference = (origin.lati - dest.lati) * M_PI/180;
+    double long_difference = (origin.longi - dest.longi) *M_PI/180;
+    double haversine = sin(lat_difference/2)*sin(lat_difference/2) + cos(lat_origin) * cos(lat_dest) * sin(long_difference/2) * sin(long_difference/2);
+    double c = 2*atan2(sqrt(haversine), sqrt(1-haversine));
+    double distance = earth_radius * c; //Can potentially be used for weight between two airports (distance in km) 
+    return distance;
 }

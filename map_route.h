@@ -13,6 +13,7 @@ class MapRoute {
     public:
     MapRoute(string route_dataset_path, string airline_dataset_path);
     //~Maproute();
+    double getDistance(Vertex origin, Vertex dest);
 
     private:
     //program return value
