@@ -8,9 +8,9 @@ using namespace std;
 
 class Edge {
     public:
-    Edge(string origin, string dest, double weight);
+    Edge(string origin, string dest, double weight, double angle);
     ~Edge();
-    void addEdge(map<string, vector<pair<string, double>>> edges_map, map<string, map<string, double>> mapRoute2d);
+    void addEdge(map<string, vector<tuple<string, double, double>>> edges_map);
     
     //void printEdgeWeights();
 
@@ -18,4 +18,5 @@ class Edge {
     string edge_origin;
     string edge_dest;
     double edge_weight;
+    double edge_angle; 
 };

@@ -15,3 +15,10 @@ Vertex::Vertex(string iata, double lati, double longi) {
     this.longi = longi;
 }
 
+double Vertex::getLati() {
+    return this.lati;
+}
+double Vertex::getLongi() {
+    return this.longi;
+}
+

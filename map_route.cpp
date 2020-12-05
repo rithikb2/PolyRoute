@@ -59,8 +59,9 @@ MapRoute::MapRoute(string route_dataset_path, string airline_dataset_path) {
         Vertex origin = vertices_map[source_airport];
         Vertex destination = vertices_map[dest_airport];
         double distance = getDistance(origin, destination);
-        Edge newEdge(source_airport, dest_airport, distance); //Made a default weight-change this later!
-        newEdge.addEdge(edges_map, routes_map); //Add newly created edge to our map of edges
+        double angle = getAngle(origin, destination);
+        Edge newEdge(source_airport, dest_airport, distance, angle); //Made a default weight-change this later!
+        newEdge.addEdge(edges_map); //Add newly created edge to our map of edges
     }
 
 }
@@ -76,4 +77,12 @@ double MapRoute::getDistance(Vertex origin, Vertex dest) {
     double c = 2*atan2(sqrt(haversine), sqrt(1-haversine));
     double distance = earth_radius * c; //Can potentially be used for weight between two airports (distance in km) 
     return distance;
+}
+
+//37.6, -122.3 foster city, 45.3, -88.7 wisconson
+double MapRoute::getAngle(Vertex origin, Vertex dest) {
+    double h = getDistance(Vertex origin, Vertex dest);
+    double a = getDistance(Vertex origin, Vertex("", dest.getLati(), origin.getLongi()));
+    double rad = acos(a/h);
+    return (rad * 180/M_PI);
 }

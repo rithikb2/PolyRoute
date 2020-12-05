@@ -15,31 +15,31 @@ using namespace std;
 * Sets the input variables to their respective private variables
 * Creates the Edge Object that can be added to the map with addEdge function
 */
-Edge::Edge(string origin, string dest, double weight) {
+Edge::Edge(string origin, string dest, double weight, double angle) {
     edge_origin = origin;
     edge_dest = dest;
     edge_weight = weight;
+    edge_angle = angle;
 }
 
 /*
 * Adds the newly constructed Edge to the map of Edges
 */
-void Edge::addEdge(map<string, vector<pair<string, double>>> edges_map, map<string, map<string, double>> mapRoute2d) {
+void Edge::addEdge(map<string, vector<tuple<string, double, double>>> edges_map) {
     //Check if origin key exists in map
     if (edges_map.find(edge_origin) == edges_map.end()) {
         //Doesn't Exist in Map Yet
-        pair<string, double> newPair(make_pair(edge_dest, edge_weight));
-        vector<pair<string, double>> newVector;
-        newVector.push_back(newPair);
+        tuple<string, double, double> newTuple(make_tuple(edge_dest, edge_weight, edge_angle));
+        vector<tuple<string, double, double>> newVector;
+        newVector.push_back(newTuple);
         edges_map[edge_origin] = newVector;
     } else {
         //Exists in Map Already
-        pair<string, double> newPair(make_pair(edge_dest, edge_weight));
-        vector<pair<string, double>> expandedVector = edges_map[edge_origin];
-        expandedVector.push_back(newPair);
+        tuple<string, double, double> newTuple(make_tuple(edge_dest, edge_weight, edge_angle));
+        vector<tuple<string, double, double>> expandedVector = edges_map[edge_origin];
+        expandedVector.push_back(newTuple);
         edges_map[edge_origin] = expandedVector;
     }
-    mapRoute2d[edge_origin][edge_dest] = edge_weight;
 }
 
 
