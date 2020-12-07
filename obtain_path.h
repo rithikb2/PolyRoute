@@ -11,4 +11,5 @@ class ObtainPath {
     double getDistance(Vertex origin, Vertex dest);
     vector<string> modifyPath(vector<string> currPath);
     map<string, Vertex> vertices_map;
+    map<string, vector<tuple<string, double, double>>> edges_map;
 };

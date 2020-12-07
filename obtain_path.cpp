@@ -18,14 +18,14 @@ int ObtainPath::pickPath(vector<vector<string>> solutions) {
     double minPerimeter;
     bool firstTime = true;
     int solution; //Index of shortest path
-    for (size_t i = 0; i < solutions.size(); i++) {
+    for (int i = 0; i < solutions.size(); i++) {
         vector<Vertex> currVertices;
         double currPerimeter = 0;
-        for (size_t j = 0; j < solutions[i].size(); j++) {
+        for (int j = 0; j < solutions[i].size(); j++) {
             Vertex currVertex = vertices_map[solutions[i][j]];
             currVertices.push_back(currVertex);
         }
-        for (size_t j = 0; j < currVertices.size(); j++) {
+        for (int j = 0; j < currVertices.size(); j++) {
             if (j == currVertices.size() - 1) {
                 //Get Distance from last vertex to the first vertex
                 double edgeDist = getDistance(vertices_map[solutions[i][j]], vertices_map[solutions[i][0]]);
@@ -50,8 +50,29 @@ int ObtainPath::pickPath(vector<vector<string>> solutions) {
     return solution;
 }
 
+/*
+* Modify Path by considering nearby airports
+* @Param a vector of strings that represents the current shortest path of the desired shape
+* Use Landmark path to determine shortest path from origin to destination through a certain vertex
+* Landmark Path: get from Origin to Destination through every 'other' vector (starting with origin)
+* Check every other vertex between (not including) origin and destination vertices
+* Go through possible edges from that starting airport and find the edges that have a similar degree range to the current 'next stop'
+* Then, make sure that that vertex has a path to the airport after
+*/
 vector<string> modifyPath(vector<string> currPath) {
-    
+    //Loop through currPath vector
+    for (int i = 0; i < currPath.size(); i++) {
+        /*Loop through each vector in edges_map
+        * Each vector represents a possible destination from the specific node that we are on
+        * Skip if i is odd (only check every other vertex)
+        */
+        if (i % 2 != 0) {
+            for (int j = 0; j < edges_map[currPath[i]].size(); j++) {
+                //check if angle is within range of current angle
+            }
+        }
+        
+    }
 }
 
 double ObtainPath::getDistance(Vertex origin, Vertex dest) {
