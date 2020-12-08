@@ -22,14 +22,9 @@ int ObtainPath::pickPath(vector<vector<string>> solutions) {
     bool firstTime = true;
     int solution; //Index of shortest path
     for (int i = 0; i < solutions.size(); i++) {
-        vector<Vertex> currVertices;
         double currPerimeter = 0;
         for (int j = 0; j < solutions[i].size(); j++) {
-            Vertex currVertex = vertices_map[solutions[i][j]];
-            currVertices.push_back(currVertex);
-        }
-        for (int j = 0; j < currVertices.size(); j++) {
-            if (j == currVertices.size() - 1) {
+            if (j == solutions[i].size() - 1) {
                 //Get Distance from last vertex to the first vertex
                 double edgeDist = getDistance(vertices_map[solutions[i][j]], vertices_map[solutions[i][0]]);
                 currPerimeter += edgeDist;
