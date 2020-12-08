@@ -71,13 +71,20 @@ vector<string> ObtainPath::modifyPath(vector<string> currPath) {
         */
         string currentStop = currPath[i];
         if (i % 2 == 0) {
-            if (i < currPath.size() - 2) {
+            if (i <= currPath.size() - 2) {
                 Vertex currVertex = vertices_map[currentStop]; //Current vertex
-                Vertex twoStopsAhead = vertices_map[currPath[i+2]]; //Next Vertex in solution path
-                Vertex oneStopAhead = vertices_map[currPath[i+1]]; //Two vertices down the path
+                Vertex twoStopsAhead = vertices_map[currPath[i+2]]; //Two vertices down the path
+                Vertex oneStopAhead = vertices_map[currPath[i+1]]; //Next Vertex in solution path
                 double currAngle = getAngle(currVertex, oneStopAhead); //Angle between current and next vertex
                 string nextStop = currPath[i+1];
-                string twoStops = currPath[i+2];
+                string twoStops;
+                if (i == currPath.size() - 2) {
+                    //Two stops ahead is the origin airport in path
+                    twoStops = currPath[0];
+                } else {
+                    //Two stops ahead is two airports ahead on the route
+                    twoStops = currPath[i+2];
+                }
                 //Loop through the possible destinations of the current vertex
                 for (int j = 0; j < edges_map[currentStop].size(); j++) { 
                     //First check if angle is within threshold of 20 degrees
