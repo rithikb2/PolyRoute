@@ -18,6 +18,6 @@ class Edge {
     private:
     string edge_origin;
     string edge_dest;
-    double edge_weight;
+    double edge_distance;
     double edge_angle; 
 };

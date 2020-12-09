@@ -18,7 +18,7 @@ using namespace std;
 Edge::Edge(string origin, string dest, double weight, double angle) {
     edge_origin = origin;
     edge_dest = dest;
-    edge_weight = weight;
+    edge_distance = weight;
     edge_angle = angle;
 }
 
@@ -29,13 +29,13 @@ void Edge::addEdge(map<string, vector<tuple<string, double, double>>> edges_map)
     //Check if origin key exists in map
     if (edges_map.find(edge_origin) == edges_map.end()) {
         //Doesn't Exist in Map Yet
-        tuple<string, double, double> newTuple(make_tuple(edge_dest, edge_weight, edge_angle));
+        tuple<string, double, double> newTuple(make_tuple(edge_dest, edge_distance, edge_angle));
         vector<tuple<string, double, double>> newVector;
         newVector.push_back(newTuple);
         edges_map[edge_origin] = newVector;
     } else {
         //Exists in Map Already
-        tuple<string, double, double> newTuple(make_tuple(edge_dest, edge_weight, edge_angle));
+        tuple<string, double, double> newTuple(make_tuple(edge_dest, edge_distance, edge_angle));
         vector<tuple<string, double, double>> expandedVector = edges_map[edge_origin];
         expandedVector.push_back(newTuple);
         edges_map[edge_origin] = expandedVector;

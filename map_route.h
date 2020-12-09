@@ -52,11 +52,14 @@ class MapRoute {
     map<string, map<string, double>> routes_map; //2D Map that has the weights of the edges between the airports
     */
 
+    vector<string[sides]> solutions;
+
     //Define Airport Info String Variables
     string index, name, city, country, IATA, ICAO, latitude, longitude, altitude,
             time_zone, dst, tz_database, type, source;
     //Define Route Info String Variables
     string airline, airline_id, source_airport, source_airport_id, dest_airport, dest_airport_id,
         codeshare, stops, equipment;
+
     
 };
