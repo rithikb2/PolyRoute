@@ -17,6 +17,9 @@ class MapRoute {
     //~Maproute();
     double getDistance(Vertex origin, Vertex dest);
     double getAngle(Vertex origin, Vertex dest);
+    int pickPath(vector<vector<string>> solutions);
+    vector<string> modifyPath(vector<string> currPath);
+    bool pathExist(string origin, string dest);
     
     private:
     //program return value
