@@ -42,7 +42,21 @@ void Edge::addEdge(map<string, vector<tuple<string, double, double>>> edges_map)
     }
 }
 
+string Edge::getOrigin() {
+    return this->edge_origin;
+}
 
+string Edge::getDest() {
+    return this->edge_dest;
+}
+
+double Edge::getDistance() {
+    return this->edge_distance;
+}
+
+double Edge::getAngle() {
+    return this->edge_angle;
+}
 
 /*
 void Edge::printEdgeWeights() {

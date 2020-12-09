@@ -12,7 +12,10 @@ class Edge {
     Edge(string origin, string dest, double weight, double angle);
     //~Edge();
     void addEdge(map<string, vector<tuple<string, double, double>>> edges_map);
-    
+    string getOrigin();
+    string getDest();
+    double getDistance();
+    double getAngle();
     //void printEdgeWeights();
 
     private:
