@@ -2,14 +2,15 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include<map>
+#include <map>
+#include <tuple>
 
 using namespace std;
 
 class Edge {
     public:
     Edge(string origin, string dest, double weight, double angle);
-    ~Edge();
+    //~Edge();
     void addEdge(map<string, vector<tuple<string, double, double>>> edges_map);
     
     //void printEdgeWeights();

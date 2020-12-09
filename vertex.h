@@ -2,16 +2,17 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include<map>
+#include <map>
 
 using namespace std;
 
 class Vertex {
 
     public:
+    Vertex();
     Vertex(string iata, double lati, double longi);
-    ~Vertex();
-    void assignSector()
+    //~Vertex();
+    void assignSector(double angle, string dest);
     double getLati();
     double getLongi();
 

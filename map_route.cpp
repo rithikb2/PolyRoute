@@ -17,7 +17,9 @@ using namespace std;
 * For the airline dataset, create a node for each airport
 * For the route dataset, create a weighted edge for each route. The weighted edge stored in the map of edges
 */
-MapRoute::MapRoute(string route_dataset_path, string airline_dataset_path) {
+MapRoute::MapRoute(string route_dataset_path, string airline_dataset_path, int sides, vector<double> angles) {
+    this->sides = sides;
+    this->angles = angles;
     ifstream route_data(route_dataset_path);
     ifstream airline_data(airline_dataset_path);
     //Create Nodes For each Airport
@@ -38,7 +40,8 @@ MapRoute::MapRoute(string route_dataset_path, string airline_dataset_path) {
         getline(linestream, type, ',');
         getline(linestream, source, ',');
         //Node Logic goes here
-        vertices_map[IATA] = new Vertex(IATA, stod(latitude), stod(longitude));
+        Vertex newVertex(IATA, stod(latitude), stod(longitude));
+        vertices_map[IATA] = newVertex;
         //Need to make both a Node, and store the Node in some sort of container
     }
 
@@ -60,7 +63,8 @@ MapRoute::MapRoute(string route_dataset_path, string airline_dataset_path) {
         Vertex destination = vertices_map[dest_airport];
         double distance = getDistance(origin, destination);
         double angle = getAngle(origin, destination);
-        Edge newEdge(source_airport, dest_airport, distance, angle); //Made a default weight-change this later!
+        Edge newEdge(source_airport, dest_airport, distance, angle);
+        origin.assignSector(angle, dest_airport);
         newEdge.addEdge(edges_map); //Add newly created edge to our map of edges
     }
 
@@ -69,10 +73,10 @@ MapRoute::MapRoute(string route_dataset_path, string airline_dataset_path) {
 double MapRoute::getDistance(Vertex origin, Vertex dest) {
     //For Weight, we could use Haversine formula to convert lat & long to distance
     double earth_radius = 6371; //km
-    double lat_origin = origin.lati * M_PI/180; //radians
-    double lat_dest = dest.lati * M_PI/180; //radians
-    double lat_difference = (origin.lati - dest.lati) * M_PI/180;
-    double long_difference = (origin.longi - dest.longi) *M_PI/180;
+    double lat_origin = origin.getLati() * M_PI/180; //radians
+    double lat_dest = dest.getLati() * M_PI/180; //radians
+    double lat_difference = (origin.getLati() - dest.getLati()) * M_PI/180;
+    double long_difference = (origin.getLongi() - dest.getLongi()) *M_PI/180;
     double haversine = sin(lat_difference/2)*sin(lat_difference/2) + cos(lat_origin) * cos(lat_dest) * sin(long_difference/2) * sin(long_difference/2);
     double c = 2*atan2(sqrt(haversine), sqrt(1-haversine));
     double distance = earth_radius * c; //Can potentially be used for weight between two airports (distance in km) 
@@ -81,8 +85,8 @@ double MapRoute::getDistance(Vertex origin, Vertex dest) {
 
 //37.6, -122.3 foster city, 45.3, -88.7 wisconson
 double MapRoute::getAngle(Vertex origin, Vertex dest) {
-    double h = getDistance(Vertex origin, Vertex dest);
-    double a = getDistance(Vertex origin, Vertex("", dest.getLati(), origin.getLongi()));
+    double h = getDistance(origin, dest);
+    double a = getDistance(origin, Vertex("", dest.getLati(), origin.getLongi()));
     double rad = acos(a/h);
     return (rad * 180/M_PI);
 }
