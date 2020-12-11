@@ -312,3 +312,7 @@ bool MapRoute::pathExist(string origin, string dest) {
     }
     return false;
 }
+
+vector<vector<string>> MapRoute::getSolutions() {
+    return solutions;
+}

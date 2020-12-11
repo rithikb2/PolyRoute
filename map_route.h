@@ -22,6 +22,7 @@ class MapRoute {
     int pickPath();
     vector<string> modifyPath(vector<string> currPath);
     bool pathExist(string origin, string dest);
+    vector<vector<string>> getSolutions();
     map<string, Vertex> vertices_map;
     
     private:
