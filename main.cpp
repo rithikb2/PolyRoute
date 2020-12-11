@@ -54,6 +54,18 @@ int main( int argc, const char* argv[] )
     MapRoute myRoute = MapRoute("routes.dat.txt", "airlines.dat.txt", sides, angles);
     myRoute.findPaths();
     //solutions are in myRoute.solutions(), call your methods here
+    int solution_index = myRoute.pickPath();
+    vector<vector<string>> theSolutions = myRoute.getSolutions();
+    vector<string> solution = theSolutions[solution_index];
+    vector<string> shortest_path = myRoute.modifyPath(solution);
+    cout<<"Your final path is: "<<endl;
+    for (int i = 0; i < shortest_path.size(); i++) {
+        if (i == shortest_path.size() - 1) {
+            cout<<shortest_path[i];
+        } else {
+            cout<<shortest_path[i]<<" -> ";
+        }
+    }
     return 0;
 }
 
