@@ -25,7 +25,7 @@ Edge::Edge(string origin, string dest, double weight, double angle) {
 /*
 * Adds the newly constructed Edge to the map of Edges
 */
-void Edge::addEdge(map<string, vector<tuple<string, double, double>>> edges_map) {
+void Edge::addEdge(map<string, vector<tuple<string, double, double>>> &edges_map) {
     //Check if origin key exists in map
     if (edges_map.find(edge_origin) == edges_map.end()) {
         //Doesn't Exist in Map Yet

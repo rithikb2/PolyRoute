@@ -40,8 +40,17 @@ MapRoute::MapRoute(string route_dataset_path, string airline_dataset_path, int s
         getline(linestream, type, ',');
         getline(linestream, source, ',');
         //Node Logic goes here
-        Vertex newVertex(IATA, stod(latitude), stod(longitude));
-        vertices_map[IATA] = newVertex;
+        //cout << latitude + " :  " + longitude;
+        try {
+            //cout << "trying";
+            stod(latitude);
+            stod(longitude);
+            Vertex newVertex(IATA, stod(latitude), stod(longitude));
+            vertices_map[IATA] = newVertex;
+        } catch (const invalid_argument&) {
+            //cout << "pass";
+            continue;
+        }
         //Need to make both a Node, and store the Node in some sort of container
     }
 
@@ -64,7 +73,7 @@ MapRoute::MapRoute(string route_dataset_path, string airline_dataset_path, int s
         double distance = getDistance(origin, destination);
         double angle = getAngle(origin, destination);
         Edge newEdge(source_airport, dest_airport, distance, angle);
-        origin.assignSector(angle, dest_airport);
+        vertices_map[source_airport].assignSector(angle, dest_airport);
         newEdge.addEdge(edges_map); //Add newly created edge to our map of edges
     }
 
@@ -85,18 +94,124 @@ double MapRoute::getDistance(Vertex origin, Vertex dest) {
 
 //37.6, -122.3 foster city, 45.3, -88.7 wisconson
 double MapRoute::getAngle(Vertex origin, Vertex dest) {
+    float dy = dest.getLati() - origin.getLati();
+    float dx = cosf(M_PI/180 * origin.getLati()) * (dest.getLongi() - origin.getLongi());
+    float angle = atan2f(dy, dx) * 180 / M_PI;
+    if (angle < 0) {
+        angle += 360;
+    }
+    return (double) angle;
+
+    /*
+    double olat = origin.getLati() * M_PI / 180;
+    double olong = origin.getLongi() * M_PI / 180;
+    double dlat = dest.getLati() * M_PI / 180;
+    double dlong = dest.getLongi() * M_PI / 180;
+
+    double londiff = (dlong - olong);
+    double y = sin(londiff) * cos(dlat);
+    double x = cos(olat) * sin(dlat) - 
+        sin(olat) * cos(dlat) * cos(londiff);
+
+    double angle = atan2(y, x);
+    angle = angle * 180/M_PI;
+    angle = (int) (angle + 360) % 360;
+    angle = 360 - angle;
+
+    return angle;
+    
     double h = getDistance(origin, dest);
     double a = getDistance(origin, Vertex("", dest.getLati(), origin.getLongi()));
     double rad = acos(a/h);
-    return (rad * 180/M_PI);
+    double angle = rad * 180/M_PI;
+    if (origin.getLati() > dest.getLati() && origin.getLongi() > dest.getLongi()) {
+        return 270 - angle;
+    } else if (origin.getLati() > dest.getLati()) {
+        return 180 - angle;
+    } else if (origin.getLongi() > dest.getLongi()) {
+        return 360 - angle;
+    }
+    return 90 - angle;
+    */
 }
+
+void MapRoute::findDestinationAngles(Vertex v, int angleNum, 
+    pair<int, string> p1, pair<int, string> p2) {
+    //rotate through 1 - 360 using two iterators
+    //when a match is found with angles[1] return out_angle strings
+    if (angleNum == angles.size() - 1) {
+        return;
+    }
+
+    map<int, vector<string>> sectors = v.getAngles();
+    int sector_value = (int) this->angles[angleNum] / DOF;
+    int start_sector = 0;
+    int end_sector = 360/DOF - 1;
+
+    if (p1.second != "" && p2.second != "") {
+        for (int i = 0; i < 360/DOF; i++) {
+            for (string j : sectors[i]) {
+                if (j == p1.second) {
+                    start_sector = i;
+                }
+                
+            }
+        }
+        for (int i = 0; i < 360/DOF; i++) {
+            for (string j : sectors[i]) {
+                if (j == p2.second) {
+                    if (abs(start_sector - i) == sector_value) {
+                        vector<string> solution = {v.getIata(), p1.second, p2.second};
+                        for (vector<string> s : solutions) {
+                            if (solution == s) {
+                                return;
+                            }
+                        }
+                        solutions.push_back(solution);
+                        return;
+                    }
+                }
+            }
+        }
+        return;
+    }
+
+    vector<string> sector_one;
+    vector<string> sector_two;
+
+    for (int i = start_sector; i <= end_sector; i++) {
+        if (!(sectors[i].empty()) && !(sectors[(i + (sector_value)) % (360/DOF)].empty())) {
+            sector_one = sectors[i];
+            sector_two = sectors[(i + (sector_value)) % (360/DOF)];
+            for (string a : sector_one) {
+                for (string b : sector_two) {
+                    pair<int, string> pair1 = {i, v.getIata()};
+                    pair<int, string> pair2 = {(i + sector_value) % (360/DOF), b};
+                    Vertex n = vertices_map[a];
+                    findDestinationAngles(n, angleNum + 1, pair1, pair2);
+                }
+            }
+        }
+    }
+}
+
+
+void MapRoute::findPaths() {
+    for(map<string,Vertex>::iterator iter = vertices_map.begin(); iter != vertices_map.end(); ++iter) {
+        if (resultThreshold == solutions.size()) {
+            return;
+        }
+        findDestinationAngles(vertices_map[iter->first], 0, {0, ""}, {0, ""});
+    }
+}
+
 
 /*
 * @Param vector of vectors of possible path solutions
 * Given a vector of vectors of s
 * Assume this is in map_route and we have access to variables/classes in map_route
 */
-int MapRoute::pickPath(vector<vector<string>> solutions) {
+int MapRoute::pickPath() {
     double minPerimeter;
     bool firstTime = true;
     int solution; //Index of shortest path

@@ -7,7 +7,7 @@ using namespace std;
 int main( int argc, const char* argv[] )
 {
     int sides;
-    cout << "How many sides does your shape have? (>2)" << "\n";
+    cout << "How many sides does your shape have? sides > 2" << "\n";
     cin >> sides;
     while (sides <= 2) {
         cout << "Invalid number of sides for a polygon" << "\n" 
@@ -33,6 +33,10 @@ int main( int argc, const char* argv[] )
         if (i > 3) {
             ending = "th";
         }
+        if (i == sides) {
+            angles.push_back(tangles);
+            break;
+        }
     
         cout << "What is the degree of the " << i << ending + " inner angle ? [1, " << 
             (int)(tangles > 179 ? 179 : tangles) << "] \n";
@@ -47,7 +51,9 @@ int main( int argc, const char* argv[] )
         }
     }
     
-    
+    MapRoute myRoute = MapRoute("routes.dat.txt", "airlines.dat.txt", sides, angles);
+    myRoute.findPaths();
+    //solutions are in myRoute.solutions(), call your methods here
     return 0;
 }
 

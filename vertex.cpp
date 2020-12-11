@@ -18,11 +18,19 @@ Vertex::Vertex(string iata, double lati, double longi) {
 }
 
 void Vertex::assignSector(double angle, string dest) {
-    if ((int) angle/5 == 0) {
-        angle = 360;
+    if (out_angles[(int) angle/DOF].empty()) {
+        vector<string> sector_ports = {};
     }
-    vector<string> &sectorIDs  = out_angles[(int) angle/5];
-    sectorIDs.push_back(dest);
+    for (string d : out_angles[(int) angle/DOF]) {
+        if (d == dest) {
+            return;
+        }
+    }
+    out_angles[(int) angle/DOF].push_back(dest);
+}
+
+string Vertex::getIata() {
+    return this->iata;
 }
 
 double Vertex::getLati() {
@@ -32,3 +40,6 @@ double Vertex::getLongi() {
     return this->longi;
 }
 
+map<int, vector<string>> Vertex::getAngles() {
+    return this->out_angles;
+}

@@ -11,7 +11,7 @@ class Edge {
     public:
     Edge(string origin, string dest, double weight, double angle);
     //~Edge();
-    void addEdge(map<string, vector<tuple<string, double, double>>> edges_map);
+    void addEdge(map<string, vector<tuple<string, double, double>>> &edges_map);
     string getOrigin();
     string getDest();
     double getDistance();

@@ -17,11 +17,16 @@ class MapRoute {
     //~Maproute();
     double getDistance(Vertex origin, Vertex dest);
     double getAngle(Vertex origin, Vertex dest);
-    int pickPath(vector<vector<string>> solutions);
+    void findDestinationAngles(Vertex v, int angleNum, pair<int, string> p1, pair<int, string> p2);
+    void findPaths();
+    int pickPath();
     vector<string> modifyPath(vector<string> currPath);
     bool pathExist(string origin, string dest);
+    map<string, Vertex> vertices_map;
     
     private:
+    static const int DOF = 2;
+    static const int resultThreshold = 20;
     //program return value
     vector<string> finalroute;
     //User inputs number of sides on desired polygon
@@ -31,15 +36,13 @@ class MapRoute {
     * Represents the inner angles of a desired polygon
     */
     vector<double> angles;
-    //Degrees of freedom for determining a valid edge
-    double dof;
 
-    map<string, Vertex> vertices_map;
+    //map<string, Vertex> vertices_map;
     /*
     * Our container that stores all of the weighted edges
     * It's a map where the keys are the origin airports (IATA-string)
     * The values for each of the keys is a vector of tuples
-    * Each of the pairs contains the destination airport (IATA-string), and the weight of the path from the origin to the destination (double)
+    * Each of the tuples contains the destination airport (IATA-string), and the weight of the path from the origin to the destination (double)
     * The edges_map would have a key (origin airport node) and the values would be a vector of tuples that includes the destination airport node, distance, and angle
     * ex. ORD: [(SFO, 63.4, 200 degrees), (DFW, 43.1, angle)], CDF: [(SHA, 110.5, angle)]
     * Can allow us to hold all the weights in an organized way
@@ -54,7 +57,6 @@ class MapRoute {
     
     map<string, map<string, double>> routes_map; //2D Map that has the weights of the edges between the airports
     */
-
     vector<vector<string>> solutions;
 
     //Define Airport Info String Variables

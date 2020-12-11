@@ -13,10 +13,13 @@ class Vertex {
     Vertex(string iata, double lati, double longi);
     //~Vertex();
     void assignSector(double angle, string dest);
+    string getIata();
     double getLati();
     double getLongi();
+    map<int, vector<string>> getAngles();
 
     private:
+    static const int DOF = 2;
     string iata;
     double lati;
     double longi;
