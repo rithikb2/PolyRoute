@@ -1,4 +1,4 @@
-# adammn2-skavi2-aortwig2-rithikb2
+# adammn2-rithikb2
 Final Project
 
 *Includes instructions on how to build/run code
