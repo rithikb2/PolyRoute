@@ -73,13 +73,13 @@ int main( int argc, const char* argv[] )
         return 0;
     }
     vector<string> solution = theSolutions[solution_index];
-    vector<string> shortest_path = myRoute.modifyPath(solution);
+    myRoute.modifyPath(solution);
     cout<<"Your final path is: "<<endl;
-    for (int i = 0; i < shortest_path.size(); i++) {
-        if (i == shortest_path.size() - 1) {
+    for (int i = 0; i < solution.size(); i++) {
+        if (i == solution.size() - 1) {
             cout<<shortest_path[i];
         } else {
-            cout<<shortest_path[i]<<" -> ";
+            cout<<solution[i]<<" -> ";
         }
     }
     cout << endl;

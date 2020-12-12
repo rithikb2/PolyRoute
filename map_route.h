@@ -21,7 +21,7 @@ class MapRoute {
     void findDestinationAngles(Vertex v, int angleNum, pair<int, string> p1, pair<int, string> p2);
     void findPaths();
     int pickPath();
-    vector<string> modifyPath(vector<string> currPath);
+    void modifyPath(vector<string> &currPath);
     bool pathExist(string origin, string dest);
     vector<vector<string>> getSolutions();
     

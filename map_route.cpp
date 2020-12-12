@@ -274,7 +274,7 @@ int MapRoute::pickPath() {
 * Go through possible edges from that starting airport and find the edges that have a similar degree range to the current 'next stop'
 * Then, make sure that that vertex has a path to the airport after
 */
-vector<string> MapRoute::modifyPath(vector<string> currPath) {
+void MapRoute::modifyPath(vector<string> &currPath) {
     //Loop through currPath vector
     for (int i = 0; i < currPath.size(); i++) {
         /*Loop through each vector in edges_map
