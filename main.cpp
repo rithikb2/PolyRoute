@@ -18,9 +18,14 @@ int main( int argc, const char* argv[] )
     double tangles = (sides - 2) * 180;
     double angle;
     vector<double> angles;
-
+    bool badInput = false;
     string ending;
-    for (int i = 1; i <= sides; i++) {
+    int i = 1;
+    while (angles.size() != sides) {
+        if (badInput) {
+            i--;
+            badInput = !badInput;
+        }
         if (i == 1) {
             ending = "st";
         }
@@ -37,18 +42,25 @@ int main( int argc, const char* argv[] )
             angles.push_back(tangles);
             break;
         }
-    
+        cout << "remaining sum of inner angles: " << tangles << endl;
         cout << "What is the degree of the " << i << ending + " inner angle ? [1, " << 
             (int)(tangles > 179 ? 179 : tangles) << "] \n";
-        cin >> angle;
+        try {
+            cin >> angle;
+        } catch (const invalid_argument&) {
+            cout << "Invalid angle for a polygon" << "\n";
+            badInput = true;
+            continue;
+        }
         
         if (angle >= 180 || angle <= 0 || angle > tangles) {
             cout << "Invalid angle for a polygon" << "\n";
-            i--;
+            badInput = true;
         } else {
             tangles -= angle;
             angles.push_back(angle);
         }
+        i++;
     }
     
     MapRoute myRoute = MapRoute("routes.dat.txt", "airlines.dat.txt", sides, angles);
@@ -70,6 +82,7 @@ int main( int argc, const char* argv[] )
             cout<<shortest_path[i]<<" -> ";
         }
     }
+    cout << endl;
     return 0;
 }
 
