@@ -323,7 +323,6 @@ void MapRoute::modifyPath(vector<string> &currPath) {
             }
         }
     }
-    return currPath;
 }
 
 //Helper function to determine if a path exists between two airports (reference edges_map)

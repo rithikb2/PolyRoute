@@ -39,18 +39,17 @@ int main( int argc, const char* argv[] )
             ending = "th";
         }
         if (i == sides) {
+            cout << "The " << i << ending + " inner angle was set to " << tangles << endl;
             angles.push_back(tangles);
             break;
         }
         cout << "remaining sum of inner angles: " << tangles << endl;
         cout << "What is the degree of the " << i << ending + " inner angle ? [1, " << 
             (int)(tangles > 179 ? 179 : tangles) << "] \n";
-        try {
-            cin >> angle;
-        } catch (const invalid_argument&) {
-            cout << "Invalid angle for a polygon" << "\n";
-            badInput = true;
-            continue;
+        
+        if (!(cin >> angle)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
         }
         
         if (angle >= 180 || angle <= 0 || angle > tangles) {
@@ -69,17 +68,17 @@ int main( int argc, const char* argv[] )
     int solution_index = myRoute.pickPath();
     vector<vector<string>> theSolutions = myRoute.getSolutions();
     if (theSolutions.empty()) {
-        cout << "Sorry, no solutions were found" <<endl;
+        cout << "Sorry, no solutions were found" << endl;
         return 0;
     }
     vector<string> solution = theSolutions[solution_index];
     myRoute.modifyPath(solution);
-    cout<<"Your final path is: "<<endl;
+    cout << "Your final path is: " << endl;
     for (int i = 0; i < solution.size(); i++) {
         if (i == solution.size() - 1) {
-            cout<<shortest_path[i];
+            cout << solution[i];
         } else {
-            cout<<solution[i]<<" -> ";
+            cout << solution[i] << " -> ";
         }
     }
     cout << endl;
