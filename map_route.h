@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <tuple>
+#include <stack>
 
 
 #include "vertex.h"
@@ -23,11 +24,12 @@ class MapRoute {
     vector<string> modifyPath(vector<string> currPath);
     bool pathExist(string origin, string dest);
     vector<vector<string>> getSolutions();
-    map<string, Vertex> vertices_map;
     
     private:
-    static const int DOF = 2;
+    static const int DOF = 5;
     static const int resultThreshold = 20;
+
+    stack<string> potentials;
     //program return value
     vector<string> finalroute;
     //User inputs number of sides on desired polygon
@@ -38,7 +40,7 @@ class MapRoute {
     */
     vector<double> angles;
 
-    //map<string, Vertex> vertices_map;
+    map<string, Vertex> vertices_map;
     /*
     * Our container that stores all of the weighted edges
     * It's a map where the keys are the origin airports (IATA-string)

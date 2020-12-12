@@ -56,6 +56,10 @@ int main( int argc, const char* argv[] )
     //solutions are in myRoute.solutions(), call your methods here
     int solution_index = myRoute.pickPath();
     vector<vector<string>> theSolutions = myRoute.getSolutions();
+    if (theSolutions.empty()) {
+        cout << "Sorry, no solutions were found" <<endl;
+        return 0;
+    }
     vector<string> solution = theSolutions[solution_index];
     vector<string> shortest_path = myRoute.modifyPath(solution);
     cout<<"Your final path is: "<<endl;

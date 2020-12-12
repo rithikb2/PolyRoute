@@ -19,7 +19,7 @@ class Vertex {
     map<int, vector<string>> getAngles();
 
     private:
-    static const int DOF = 2;
+    static const int DOF = 5;
     string iata;
     double lati;
     double longi;

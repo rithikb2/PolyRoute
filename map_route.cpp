@@ -159,15 +159,36 @@ void MapRoute::findDestinationAngles(Vertex v, int angleNum,
         }
         for (int i = 0; i < 360/DOF; i++) {
             for (string j : sectors[i]) {
-                if (j == p2.second) {
+                if (j == p2.second && angleNum == angles.size() - 2) {
                     if (abs(start_sector - i) == sector_value) {
-                        vector<string> solution = {v.getIata(), p1.second, p2.second};
+                        potentials.push(v.getIata());
+                        potentials.push(p2.second);
+                        vector<string> solution = {};
+                        while (!potentials.empty()) {
+                            solution.push_back(potentials.top());
+                            potentials.pop();
+                        }
+                        //vector<string> solution = {v.getIata(), p1.second, p2.second};
                         for (vector<string> s : solutions) {
                             if (solution == s) {
                                 return;
                             }
                         }
                         solutions.push_back(solution);
+                        return;
+                    } else {
+                        potentials.pop();
+                    }
+                } else {
+                    //only p1 is fixed, p2 is freebie
+                    if (abs(start_sector - i) == sector_value) {
+                        potentials.push(v.getIata());
+                        //recurse
+                        pair<int, string> pair1 = {i, v.getIata()};
+                        pair<int, string> pair2 = p2;
+
+                        Vertex n = vertices_map[j];
+                        findDestinationAngles(n, angleNum + 1, pair1, pair2);
                         return;
                     }
                 }
@@ -188,6 +209,8 @@ void MapRoute::findDestinationAngles(Vertex v, int angleNum,
                     pair<int, string> pair1 = {i, v.getIata()};
                     pair<int, string> pair2 = {(i + sector_value) % (360/DOF), b};
                     Vertex n = vertices_map[a];
+                    potentials = stack<string>();
+                    potentials.push(v.getIata());
                     findDestinationAngles(n, angleNum + 1, pair1, pair2);
                 }
             }
